@@ -57,9 +57,15 @@ QLabel#orange {
 
 /********************************* TextEdit UI settings ***************************************/
 QTextEdit, QLineEdit {
+    border-radius: 7px;
     background-color: "#F0F5F9";
     color: "#323335";
     font-size: 18px;
+    min-height: 36px;
+}
+
+QLineEdit:hover {
+    border: 2px solid "#e95420";
 }
 
 QLineEdit[readOnly="true"] {

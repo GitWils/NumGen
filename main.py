@@ -2,6 +2,8 @@
 import sys
 from PyQt6 import QtGui, QtWidgets, QtCore
 import CustomWidgets
+import pprint
+import config
 
 from pprint import pprint
 
@@ -19,8 +21,6 @@ class mainWindow(QtWidgets.QMainWindow):
         self.setGeometry(50, 50, 600, 300)
         self.centerWindow()
         self.setWindowTitle('Генератор послідовних чисел')
-        # self.setMenuBar(self._createMenuBar())
-
 
     def centerWindow(self):
         """ centering the main window in the center of the screen """
@@ -46,14 +46,10 @@ class Project(QtWidgets.QWidget):
         self.editLayout = QtWidgets.QGridLayout()
         lblFirstNum = QtWidgets.QLabel('Перший номер:')
         lblCountNum = QtWidgets.QLabel('Кількість номерів:')
-        editFirstNum = QtWidgets.QLineEdit()
-        editCountNum = QtWidgets.QLineEdit()
-        btnOpenFile = QtWidgets.QPushButton()
-        btnOpenFile.setText("Відкрити gen.txt")
-        btnOpenFile.setDisabled(True)
-        btnOpenFile.setMaximumWidth(300)
-        btnOpenFile.setMinimumSize(200, 34)
-        bbox = self.initButtonBox()
+        editFirstNum = CustomWidgets.CustomLineEdit(config.data['fnum'])
+        editCountNum =  CustomWidgets.CustomLineEdit(config.data['count'])
+        btnOpenFile = CustomWidgets.CustomButton("Відкрити gen.txt", False)
+        bbox = CustomWidgets.ButtonBox(True)
         self.editLayout.addWidget(lblFirstNum,  0, 0, 1, 1)
         self.editLayout.addWidget(lblCountNum,  0, 1, 1, 1)
         self.editLayout.addWidget(editFirstNum, 1, 0, 1, 1)
@@ -65,22 +61,13 @@ class Project(QtWidgets.QWidget):
         self.editLayout.setAlignment(lblCountNum, QtCore.Qt.AlignmentFlag.AlignCenter)
         self.editLayout.setAlignment(btnOpenFile, QtCore.Qt.AlignmentFlag.AlignCenter)
         self.editLayout.setAlignment(bbox, QtCore.Qt.AlignmentFlag.AlignCenter)
-        # self.nomenclatureTbl = Nomenclature(self.db.getNomenclatureUnits())
-        # self.tableLayout.addWidget(self.nomenclatureTbl)
         self.editLayout.setContentsMargins(50, 50, 50, 50)
         self.editLayout.setSpacing(30)
         self.editLayout.setRowStretch(0, 30)
         self.editLayout.setRowStretch(1, 30)
         self.setLayout(self.editLayout)
 
-    def initButtonBox(self):
-        """ create widget with "Cancel" and "Save" buttons """
-        bbox = CustomWidgets.ButtonBox(True)
-        # bbox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setText('Генерувати')
-        # bbox.button(QtWidgets.QDialogButtonBox.StandardButton.Cancel).setText('Вихід')
-        # bbox.accepted.connect(self.save)
-        # bbox.rejected.connect(self.reject)
-        return bbox
+        pprint(config.data)
 
     def showAll(self):
         #TODO: showing all nomenclature units...

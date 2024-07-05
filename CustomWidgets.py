@@ -1,64 +1,19 @@
 import sys
 from PyQt6 import QtGui, QtWidgets, QtCore
 
-class EditBtn(QtWidgets.QPushButton):
-    def __init__(self, filename, active, tooltip = ''):
-        self.filename = filename
-        if(active):
-            QtWidgets.QPushButton.__init__(self, QtGui.QIcon('img/act' + self.filename), '')
-        else:
-            QtWidgets.QPushButton.__init__(self, QtGui.QIcon('img/inact' + self.filename), '')
-            self.setDisabled(True)
-        self.setIconSize(QtCore.QSize(40, 40))
-        self.setToolTip(tooltip)
-        self.setObjectName("mng")
-        self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
-        self.setStyleSheet("border: 0px solid red")
-
-    def setActive(self, active):
-        if (active):
-            self.setIcon(QtGui.QIcon('img/act' + self.filename))
-            self.setEnabled(True)
-        else:
-            self.setIcon(QtGui.QIcon('img/inact' + self.filename))
-            self.setDisabled(True)
-
-    def fileName(self):
-        return self.filename
-
-class CustomTable(QtWidgets.QTableView):
-    def __init__(self):
-        self.setColumnStyles()
-        #self.setObjectName("table")
-
-
-    def setColumnStyles(self):
-        #self.setMinimumWidth(800)
-        self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setAlternatingRowColors(True)
-        self.setSortingEnabled(True)
-        self.setEditTriggers(QtWidgets.QListView.EditTrigger.NoEditTriggers)
-        header = self.horizontalHeader()
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        self.setColumnHidden(0, True)
-        #header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
-
-class CustomDSpinBox(QtWidgets.QDoubleSpinBox):
-    def __init__(self):
+class CustomLineEdit(QtWidgets.QLineEdit):
+    def __init__(self, text):
         super().__init__()
-        self.setValue(1)
-        self.setMaximum(100000)
-        self.setDecimals(4)
+        self.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.setText(text)
 
-class CustomSpinBox(QtWidgets.QSpinBox):
-    def __init__(self):
+class CustomButton(QtWidgets.QPushButton):
+    def __init__(self, text, enabled=True):
         super().__init__()
-        self.setValue(1)
-        self.setMaximum(100000)
-        #self.setSuffix(' шт.')
+        self.setText(text)
+        self.setEnabled(enabled)
+        self.setMaximumWidth(300)
+        self.setMinimumSize(200, 34)
 
 class ButtonBox(QtWidgets.QDialogButtonBox):
     def __init__(self, doubleBtnMode):
