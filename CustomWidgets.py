@@ -15,7 +15,15 @@ class CustomButton(QtWidgets.QPushButton):
         self.setMaximumWidth(300)
         self.setMinimumSize(200, 34)
 
-class ButtonBox(QtWidgets.QDialogButtonBox):
+class CustomLayout(QtWidgets.QGridLayout):
+    def __init__(self):
+        super().__init__()
+        self.setContentsMargins(40, 40, 40, 40)
+        self.setSpacing(30)
+        self.setRowStretch(0, 30)
+        self.setRowStretch(1, 30)
+
+class CustomButtonBox(QtWidgets.QDialogButtonBox):
     def __init__(self, doubleBtnMode):
         super().__init__()
         if(doubleBtnMode):
@@ -23,6 +31,7 @@ class ButtonBox(QtWidgets.QDialogButtonBox):
                                 QtWidgets.QDialogButtonBox.StandardButton.Ok)
             self.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setObjectName('dlgBtn')
             self.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setText('Вихід')
+            self.button(QtWidgets.QDialogButtonBox.StandardButton.Close)
         else:
             self.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setObjectName('dlgBtn')

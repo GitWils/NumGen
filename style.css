@@ -19,7 +19,6 @@ QWidget {
 }
 
 #dlgBtn:pressed, QMessageBox QPushButton:pressed {
-    font-size: 16px;
     color: "#F0F5F9";
     background-color: "#52616B"
 }
@@ -29,7 +28,6 @@ QWidget {
 }
 
 #dlgBtn:disabled, QPushButton:disabled {
-    font-size: 16px;
     color: "#888";
     background-color: "#32414B"
 }
@@ -61,7 +59,7 @@ QTextEdit, QLineEdit {
     background-color: "#F0F5F9";
     color: "#323335";
     font-size: 18px;
-    min-height: 36px;
+    min-height: 37px;
 }
 
 QLineEdit:hover {
@@ -75,7 +73,7 @@ QLineEdit[readOnly="true"] {
 QListView {
     width: 50px;
     color: #F0F5F9;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 QListView::item:selected {
