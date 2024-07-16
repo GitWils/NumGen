@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 import sys
+import os
 import subprocess
 from PyQt6 import QtGui, QtWidgets, QtCore
 import CustomWidgets
@@ -53,13 +54,14 @@ class mainWindow(QtWidgets.QMainWindow):
     def openTxtFile(self):
         """ when open gen.txt button was clicked """
         fileObj = open('gen.txt', 'w')
-        #print(type(self.editFirstNum.text()))
         for i in range(int(config.data['fnum']), int(config.data['fnum']) + int(config.data['count']), 1):
             fileObj.write(str(i) + '\n')
         fileObj.close()
         file_path = "gen.txt"
-        subprocess.run(['xdg-open', file_path])
-        print("open text file")
+        if sys.platform == 'win32' or sys.platform == 'win64':
+            os.system(f'notepad.exe "{file_path}"')
+        else:
+            subprocess.run(['xdg-open', file_path])
 
     def centerWindow(self):
         """ centering the main window in the center of the screen """
