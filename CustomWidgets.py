@@ -5,7 +5,7 @@ class CustomLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text):
         super().__init__()
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.setText(text)
+        self.setText(str(text))
 
 class CustomButton(QtWidgets.QPushButton):
     def __init__(self, text, enabled=True):

@@ -4,14 +4,15 @@ import os
 import subprocess
 from PyQt6 import QtGui, QtWidgets, QtCore
 import CustomWidgets
-import pprint
-import config
-
-from pprint import pprint
+import json
 
 class mainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        self.firstNumCfg = 0
+        self.countCfg = 0
+        self.configFileName = "config.json"
+        self.loadConfig()
         self.initUI()
 
     def initUI(self):
@@ -22,28 +23,37 @@ class mainWindow(QtWidgets.QMainWindow):
         self.centerWindow()
         self.setWindowTitle('Генератор послідовних чисел')
 
-        self.editLayout = CustomWidgets.CustomLayout()
+        editLayout = CustomWidgets.CustomLayout()
         lblFirstNum = QtWidgets.QLabel('Перший номер:')
         lblCountNum = QtWidgets.QLabel('Кількість номерів:')
-        self.editFirstNum = CustomWidgets.CustomLineEdit(config.data['fnum'])
-        self.editCountNum = CustomWidgets.CustomLineEdit(config.data['count'])
+        self.editFirstNum = CustomWidgets.CustomLineEdit(self.firstNumCfg)
+        self.editCountNum = CustomWidgets.CustomLineEdit(self.countCfg)
         self.btnOpenFile = CustomWidgets.CustomButton("Відкрити gen.txt", False)
         self.btnOpenFile.clicked.connect(self.openTxtFile)
         bbox = CustomWidgets.CustomButtonBox(True)
         bbox.accepted.connect(self.generate)
         bbox.rejected.connect(self.close)
 
-        self.editLayout.addWidget(lblFirstNum,          0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.editLayout.addWidget(lblCountNum,          0, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.editLayout.addWidget(self.editFirstNum,    1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.editLayout.addWidget(self.editCountNum,    1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.editLayout.addWidget(self.btnOpenFile,     2, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.editLayout.addWidget(bbox,                 9, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(lblFirstNum,          0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(lblCountNum,          0, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.editFirstNum,    1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.editCountNum,    1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.btnOpenFile,     2, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(bbox,                 9, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
 
         centralWidget = QtWidgets.QWidget()
         self.setCentralWidget(centralWidget)
-        centralWidget.setLayout(self.editLayout)
-        pprint(config.data)
+        centralWidget.setLayout(editLayout)
+
+    def loadConfig(self):
+        """ loading data from config file """
+        try:
+            with open(self.configFileName, mode="r", encoding="utf-8") as read_file:
+                data = json.load(read_file)
+                self.firstNumCfg = int(data['firstNum'])
+                self.countCfg = int(data['count'])
+        except:
+            print(f"error load data from" + self.configFileName)
 
     def generate(self):
         """ when generate button was clicked """
@@ -78,6 +88,16 @@ class mainWindow(QtWidgets.QMainWindow):
         elif e.type() == QtCore.QEvent.Type.KeyPress and e.key() == QtCore.Qt.Key.Key_Escape:
             self.close()
         return QtWidgets.QWidget.event(self, e)
+
+    def close(self):
+        # writing current data in config, closing after
+        data = {
+            "firstNum": self.editFirstNum.text(),
+            "count": self.editCountNum.text()
+        }
+        with open(self.configFileName, mode="w", encoding="utf-8") as write_file:
+            json.dump(data, write_file)
+        super().close()
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
