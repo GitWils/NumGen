@@ -47,16 +47,15 @@ class mainWindow(QtWidgets.QMainWindow):
 
     def generate(self):
         """ when generate button was clicked """
-        print("кнопка генерації")
         self.btnOpenFile.setEnabled(True)
         self.btnOpenFile.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
+        fileObj = open('gen.txt', 'w')
+        for i in range(int(self.editFirstNum.text()), int(self.editFirstNum.text()) + int(self.editCountNum.text()), 1):
+            fileObj.write(str(i) + '\n')
+        fileObj.close()
 
     def openTxtFile(self):
         """ when open gen.txt button was clicked """
-        fileObj = open('gen.txt', 'w')
-        for i in range(int(config.data['fnum']), int(config.data['fnum']) + int(config.data['count']), 1):
-            fileObj.write(str(i) + '\n')
-        fileObj.close()
         file_path = "gen.txt"
         if sys.platform == 'win32' or sys.platform == 'win64':
             os.system(f'notepad.exe "{file_path}"')
