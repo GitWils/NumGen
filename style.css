@@ -29,7 +29,8 @@ QWidget {
 
 #dlgBtn:disabled, QPushButton:disabled {
     color: "#888";
-    background-color: "#32414B"
+    background-color: "#32414B";
+    border-radius: 7px;
 }
 
 QToolTip {
@@ -60,6 +61,8 @@ QTextEdit, QLineEdit {
     color: "#323335";
     font-size: 18px;
     min-height: 37px;
+    min-width: 160px;
+    border: 1px solid red;
 }
 
 QLineEdit:hover {
@@ -77,7 +80,7 @@ QListView {
 }
 
 QListView::item:selected {
-    background-color: "#e95420"
+    background-color: "#e95420";
 }
 
 /********************************* QCheckBox UI settings ***************************************/

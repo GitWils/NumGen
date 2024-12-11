@@ -3,3 +3,4 @@ venv/
 gen.txt
 .idea
 1.png
+config.json

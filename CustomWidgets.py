@@ -18,7 +18,7 @@ class CustomButton(QtWidgets.QPushButton):
 class CustomLayout(QtWidgets.QGridLayout):
     def __init__(self):
         super().__init__()
-        self.setContentsMargins(40, 40, 40, 40)
+        self.setContentsMargins(30, 30, 30, 30)
         self.setSpacing(30)
         self.setRowStretch(0, 30)
         self.setRowStretch(1, 30)

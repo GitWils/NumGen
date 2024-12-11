@@ -5,6 +5,7 @@ import subprocess
 from PyQt6 import QtGui, QtWidgets, QtCore
 import CustomWidgets
 import json
+from pprint import pprint
 
 class mainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -26,20 +27,24 @@ class mainWindow(QtWidgets.QMainWindow):
         editLayout = CustomWidgets.CustomLayout()
         lblFirstNum = QtWidgets.QLabel('Перший номер:')
         lblCountNum = QtWidgets.QLabel('Кількість номерів:')
+        lblSeparate = QtWidgets.QLabel('Відділити:')
         self.editFirstNum = CustomWidgets.CustomLineEdit(self.firstNumCfg)
         self.editCountNum = CustomWidgets.CustomLineEdit(self.countCfg)
+        self.editSeparate = CustomWidgets.CustomLineEdit(0)
         self.btnOpenFile = CustomWidgets.CustomButton("Відкрити gen.txt", False)
         self.btnOpenFile.clicked.connect(self.openTxtFile)
         bbox = CustomWidgets.CustomButtonBox(True)
         bbox.accepted.connect(self.generate)
         bbox.rejected.connect(self.close)
 
-        editLayout.addWidget(lblFirstNum,          0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        editLayout.addWidget(lblCountNum,          0, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        editLayout.addWidget(self.editFirstNum,    1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        editLayout.addWidget(self.editCountNum,    1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
-        editLayout.addWidget(self.btnOpenFile,     2, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
-        editLayout.addWidget(bbox,                 9, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(lblFirstNum,       0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(lblCountNum,       0, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(lblSeparate,       0, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.editFirstNum, 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.editCountNum, 1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.editSeparate, 1, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(self.btnOpenFile,  2, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignCenter)
+        editLayout.addWidget(bbox,              9, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignCenter)
 
         centralWidget = QtWidgets.QWidget()
         self.setCentralWidget(centralWidget)
@@ -53,15 +58,20 @@ class mainWindow(QtWidgets.QMainWindow):
                 self.firstNumCfg = int(data['firstNum'])
                 self.countCfg = int(data['count'])
         except:
-            print(f"error load data from" + self.configFileName)
+            print(f"Error: load data from " + self.configFileName)
 
     def generate(self):
         """ when generate button was clicked """
         self.btnOpenFile.setEnabled(True)
         self.btnOpenFile.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
         fileObj = open('gen.txt', 'w')
-        for i in range(int(self.editFirstNum.text()), int(self.editFirstNum.text()) + int(self.editCountNum.text()), 1):
+        first = int(self.editFirstNum.text())
+        count = int(self.editCountNum.text())
+        separator = int(self.editSeparate.text())
+        for i in range(first, first + count, 1):
             fileObj.write(str(i) + '\n')
+            if(separator and (i - first + 1)%separator == 0):
+                fileObj.write('\n')
         fileObj.close()
 
     def openTxtFile(self):
@@ -71,6 +81,14 @@ class mainWindow(QtWidgets.QMainWindow):
             os.system(f'notepad.exe "{file_path}"')
         else:
             subprocess.run(['xdg-open', file_path])
+
+    # def closeTxtFile(self):
+    #     file_path = "gen.txt"
+    #     if sys.platform == 'win32' or sys.platform == 'win64':
+    #         try:
+    #             os.system('taskkill /F /IM notepad.exe')
+    #         except:
+    #             print(f"Error: can't close file notepad.exe")
 
     def centerWindow(self):
         """ centering the main window in the center of the screen """
